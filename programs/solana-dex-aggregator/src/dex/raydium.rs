@@ -2,11 +2,11 @@ use crate::state::*;
 use anchor_lang::prelude::*;
 use raydium_cpmm_cpi::cpi;
 
-pub fn swap_raydium(
+pub fn raydium_swap(
     ctx: Context<RaydiumSwap>,
     amount_in: u64,
     minimum_amount_out: u64,
-) -> Result<u64> {
+) -> Result<()> {
     // Build CPI accounts struct
     let cpi_accounts = cpi::accounts::Swap {
         payer: ctx.accounts.payer.to_account_info(),
@@ -30,6 +30,5 @@ pub fn swap_raydium(
     // Execute swap via CPI
     cpi::swap_base_input(cpi_ctx, amount_in, minimum_amount_out)?;
 
-    // Return expected output amount
-    Ok(minimum_amount_out)
+    Ok(())
 }
